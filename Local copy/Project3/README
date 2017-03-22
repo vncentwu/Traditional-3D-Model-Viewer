@@ -1,0 +1,58 @@
+This file/loader viewer loads objects and allows the user to manipulate the objects using mouse controls and console commands.
+
+The program complies with the inputs as dictated by the assignment page:
+
+
+	>>MOUSE INPUTS:
+
+    Left click & drag: Orbit around the point of interest.
+    Middle click & drag: Pan the object (move the point of interest in the camera's X/Y plane).
+    Right click & drag: Zoom in/out on the point of interest. 
+
+    >>CONSOLE INPUTS:
+
+    L <objectfilename>: Load and display the contents of the specified .obj file (assume the .obj extension if it isn't explicitly typed into the name). Remember the contents as the current object.
+
+    D: Delete the current object and remove it from the display. Make the previous current object be the current object (i.e. pop the object id stack to get a new current object).
+
+    I: Load the identity matrix as the modeling transform. Note that this should not change the viewing transform, i.e. you shouldn't just load identity into the MODELVIEW matrix. It should, however, neutralize the effects of any existing modeling transforms.
+
+    T <tx> <ty> <tz>: Add a translation by the specified parameters to the current modeling transformation.
+
+    S <sx> <sy> <sz>: Add a scale by the specified parameters to the current modeling transformation.
+
+    R <theta> <ax> <ay> <az>: Add a rotation counterclockwise by angle theta about the specified axis vector (note that the axis vector should not be required to be a unit vector) to the current modeling transformation.
+
+    V: Subsequent transformation parameters are interpreted as being in the viewer's local coordinate system.
+
+    W: Subsequent transformation parameters are interpreted as being in the world coordinate system. 
+
+Additionally, RENDERING MODES are also alterable using the console:
+
+	POINT: Draws the vertices
+
+	WIRE: Draws the edges of the mesh
+
+	SOLID: Draws filled triangles
+
+	SHADED: Draws filled triangles with basic lighting
+
+	FNORMALS: Displays face normals
+
+	VNORMALS: Displays vertex normals
+
+Extra credit:
+
+	ROTATOPOTATO: Automatically rotates the model
+
+	OBJECTS: Prints a list of all loaded objects and their names
+
+	D <id>: Deletes the object using the id of the object (seen from command 	OBJECTS)
+
+	SWITCH <id>: Switches to the object using the id of the object (seen 		from command OBJECTS)
+
+	
+	
+Miscellaneous:
+	
+	QUIT: Exit the program

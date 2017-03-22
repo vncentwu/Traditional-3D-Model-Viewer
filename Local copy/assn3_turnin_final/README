@@ -1,0 +1,84 @@
+/*Name: Vincent Wu
+  csid: vncentwu
+ */
+
+
+This file/loader viewer loads objects and allows the user to manipulate the objects using mouse controls and console commands.
+
+I included three options for running the program:
+
+    ./main
+        Runs the object loader with no objects loaded
+    ./main <object file name>
+        Runs the object loader, loading the specified object
+    ./main -f <file name>
+        Runs the object loader, and initializes the object loader with the commands specified within the file.
+
+The program complies with the inputs as dictated by the assignment page:
+
+
+	>>MOUSE INPUTS:
+
+    Left click & drag: Orbit around the point of interest.
+    Middle click & drag: Pan the object (move the point of interest in the camera's X/Y plane).
+    Right click & drag: Zoom in/out on the point of interest. 
+
+    >>CONSOLE INPUTS:
+
+    L <objectfilename>: Load and display the contents of the specified .obj file (assume the .obj extension if it isn't explicitly typed into the name). Remember the contents as the current object.
+
+    D: Delete the current object and remove it from the display. Make the previous current object be the current object (i.e. pop the object id stack to get a new current object).
+
+    I: Load the identity matrix as the modeling transform. Note that this should not change the viewing transform, i.e. you shouldn't just load identity into the MODELVIEW matrix. It should, however, neutralize the effects of any existing modeling transforms.
+
+    T <tx> <ty> <tz>: Add a translation by the specified parameters to the current modeling transformation.
+
+    S <sx> <sy> <sz>: Add a scale by the specified parameters to the current modeling transformation.
+
+    R <theta> <ax> <ay> <az>: Add a rotation counterclockwise by angle theta about the specified axis vector (note that the axis vector should not be required to be a unit vector) to the current modeling transformation.
+
+    V: Subsequent transformation parameters are interpreted as being in the viewer's local coordinate system.
+
+    W: Subsequent transformation parameters are interpreted as being in the world coordinate system. 
+
+Additionally, RENDERING MODES are also alterable using the console:
+
+	POINT: Draws the vertices
+
+	WIRE: Draws the edges of the mesh
+
+	SOLID: Draws filled triangles
+
+	SHADED: Draws filled triangles with basic lighting
+
+	FNORMALS: Displays face normals
+
+	VNORMALS: Displays vertex normals
+
+Extra credit:
+
+	Animation:
+        command 'ROTATOPOTATO' automatically rotates the object. Alternatively, press the 'r' key.
+
+    Running command line:
+        By default, asking the user for input will pause the program. My program is able to accept input while the program is constantly updating and drawing. I used threads to allow for this functionality. Since GLUT is not thread safe, issues may arise due to using threads. I made sure not to call any GLUT calls inside of the child thread, and kept the functionality of the thread very simple. It asks the user for input, assigns the new command, and then sets the flag for a new command to true. This eliminates synchronization issues that may occur due to the thread interrupting between the command set and the flag set. If the thread interrupts between the command set and the flag set, the command will simply not process until the flag is set, and the user will not be prompted for more input -- until control returns to the thread. The rest of the logic is delegated to the main thread.
+
+    Fitting object to screen:
+        Many objects are different in size. My program automatically sets the zoom to accomodate the span of the object and fit the entirety of it into the screen.
+
+    Object management/naming:
+        D <index>: Deletes object at specified index.
+        SWITCH <index>: Switches scene to object as specified index.
+        DRAW <index>: Adds object at specified index to the current scene. This enables multiple objects to be viewed at one time.
+
+        Objects can be switched, deleted, and added to the scene by index number. Index number is accessed by the command 'OBJECTS'. 
+        For example, if I were to load in three objects of cactus, sphere, and cessna, they would be assigned index 0, 1, and 2 respectively. The highest index object would be displayed by default. I can choose to 'SWITCH 0' to switch to the cactus. From there, I could use the command 'D 1' to delete the cessna. Finally, I could use the command 'DRAW 0' to load the sphere into the cactus' scene, viewing both the cactus and sphere at the same time.
+
+        NOTE*: When switching objects, indices are reassigned as the current object will always be the highest index.
+        NOTE**: Viewing multiple objects will take priority on the main object of the scene. What this means is that fitting the object to screen, zoom speed, translate speed, scaling, rotation speed, and center point will all be done using the object data of the main object. In 3D modeling terms, consider the main object the parent, and all the additional objects as the children.
+        NOTE***: Due to the disparity of sizing and positioning between varying objects, some objects may not appear to load simultaneously since they are outside of the screen. It is best to test this function with objects that are similar in size and position (eg. the cactus and cessna).
+
+
+Miscellaneous:
+	
+	QUIT: Exit the program
